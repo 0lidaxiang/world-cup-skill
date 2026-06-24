@@ -1,0 +1,30 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# This public repository intentionally excludes knowledge data.
+data/*.csv
+data/batches/
+data/archive/
+logs/
+reports/
+
+# Local/generated content
+articles/
+dist/
+build/
+tmp/
+*.log
+
+# Secrets and local config
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.mobileprovision

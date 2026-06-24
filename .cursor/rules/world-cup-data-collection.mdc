@@ -1,0 +1,29 @@
+---
+description: 世界杯知识库 — 外网采集限速（所有脚本与 Agent 必须遵守）
+alwaysApply: true
+---
+
+# 外网请求限速（强制）
+
+适用于本仓库 **全部 Python 脚本**（`scripts/` 已有与将新建）、**Agent 手动/MCP 联网抓取**，无例外。
+
+## 硬性要求
+
+1. **间隔**：任意两次对外部 URL/API 的请求之间，至少间隔 **1 秒**（`MIN_REQUEST_INTERVAL_SEC = 1.0`）。
+2. **禁止**：多线程/异步并发抓同一站点、无 `sleep` 的循环 `requests`/`urllib`/`httpx`、429/503 后立即连发重试。
+3. **实现**：Python 脚本 **必须** 使用 `scripts/fetch_utils.py` 中的 `RateLimitedFetcher`；不得将 `min_interval_sec` 设为小于 1.0。
+4. **重试**：遇 429/503 使用指数退避（建议 2s → 4s → 8s），每次重试仍计入限速。
+5. **优先**：能用本地 CSV、`generate_*.py` 结构化数据或单次批量官方接口的，**不要**拆成高频小请求。
+6. **Agent**：使用 Firecrawl、WebFetch、浏览器 MCP 等时同样串行 pacing，单会话抓取 URL 建议 ≤30，必要时分批会话；禁止为赶进度并行轰炸。
+
+## 脚本作者检查清单
+
+- [ ] 新建/修改 `scripts/*.py` 时，若含联网逻辑 → 只用 `RateLimitedFetcher` 或显式 `sleep_between_requests()`
+- [ ] 文件头 docstring 注明：本脚本是否访问外网；若否，写「本地数据 only」
+- [ ] 不在脚本中硬编码赌博/赔率类抓取源（见 `docs/id-conventions.md` §7.3）
+
+## 权威文档
+
+- 细则：`docs/data-collection-policy.md`
+- 工具：`scripts/fetch_utils.py`
+- 任务 SOP：执行 `data/tasks.csv` 时与拒答/校验规范一并遵守

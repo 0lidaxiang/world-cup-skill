@@ -1,0 +1,9 @@
+World Cup Skill Template
+
+This public repository contains a data-free Cursor Agent Skill template, local validation scripts, and documentation for building a World Cup/football knowledge-base workflow.
+
+No official FIFA, IFAB, federation, club, broadcaster, team, player, event, mascot, logo, emblem, song, image, video, match footage, subtitle, transcript, or licensed database content is included.
+
+FIFA, FIFA World Cup, World Cup, IFAB, competition names, federation names, club names, player names, tournament marks, mascots, emblems, songs, and other third-party names or marks are the property of their respective owners. Their mention is nominative and descriptive only, and does not imply affiliation, sponsorship, endorsement, or authorization.
+
+If users add their own local CSV data, they are responsible for verifying source rights, attribution requirements, privacy requirements, and publication/commercial-use permissions.

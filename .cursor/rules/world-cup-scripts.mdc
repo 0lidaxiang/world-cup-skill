@@ -1,0 +1,32 @@
+---
+description: scripts/ 目录 Python 脚本编写约定（含限速与校验流程）
+globs: scripts/**/*.py
+alwaysApply: false
+---
+
+# scripts/ 编写约定
+
+## 外网与限速
+
+- **所有** `scripts/*.py`（含历史 `generate_*`、`validate_*`、`merge_*`、`review_*` 与未来新增）遵守 `.cursor/rules/world-cup-data-collection.mdc`。
+- 联网代码示例：
+
+```python
+from fetch_utils import RateLimitedFetcher
+
+fetcher = RateLimitedFetcher()  # 默认 min_interval_sec=1.0
+body = fetcher.get("https://example.com/data")
+```
+
+- 禁止：`requests.get(url)` 放在无间隔的 `for` 循环中；禁止 `asyncio.gather` 批量抓同一域名。
+
+## 知识批次生成
+
+- 数据任务：写入后运行 `validate_knowledge.py {csv} --strict`，再 `merge_batches.py --build-all --skip-validate`（或按任务说明）。
+- ID 与禁赌词：`docs/id-conventions.md`、`docs/csv-schema-design.md`。
+- 纯本地生成脚本应在 docstring 标明 `Network: none (local structured data only)`。
+
+## 新增脚本命名
+
+- 批次生成：`generate_{task_id}_*.py`
+- 抽检：`review_{category}.py`
